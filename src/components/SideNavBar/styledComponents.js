@@ -71,11 +71,11 @@ export const AllSideBottomContainer = styled.ul`
   margin-top: auto; /* Pushes the container to the bottom */
 `
 export const ContactUsHeading = styled.p`
-font-weight:bold;
-font-size:1.3rem;
-text-align-center;
-margin-left:10px;
-color:${props => (props.isDarkLightMode ? '#ffffff' : '#313131')};
+  font-weight: bold;
+  font-size: 1.3rem;
+  text-align: center;
+  margin-left: 10px;
+  color: ${props => (props.isDarkLightMode ? '#ffffff' : '#313131')};
 `
 export const SocialMediaContainer = styled.div`
   display: flex;
@@ -88,9 +88,9 @@ export const SocialLogoImg = styled.img`
   margin: 10px;
 `
 export const ContactUsSubText = styled.p`
-font-weight:bold;
-font-size:1rem;
-color:${props => (props.isDarkLightMode ? '#ffffff' : '#313131')};
-text-align-center;
-margin-left:10px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: ${props => (props.isDarkLightMode ? '#ffffff' : '#313131')};
+  text-align: center;
+  margin-left: 10px;
 `

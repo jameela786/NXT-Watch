@@ -39,13 +39,12 @@ const SideNavBar = props => {
   } else if (location.pathname === '/saved-videos') {
     isActiveSavedVideos = true
   }
-  console.log('location', location, isActiveGaming, isActiveHome)
+  // console.log('location', location, isActiveGaming, isActiveHome)
   return (
     <SavedVideosContext.Consumer>
       {value => {
         const {isDarkLightMode} = value
 
-        console.log('navbar 313131', isDarkLightMode)
         return (
           <SidebarLeft isDarkLightMode={isDarkLightMode}>
             <AllSideTopContainer>

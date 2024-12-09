@@ -2,11 +2,13 @@ import styled from 'styled-components'
 
 import ReactPlayer from 'react-player'
 
+export const DivVideoItemCOntainer = styled.div`
+  border: 0px solid;
+`
+
 export const VideoIdContentContainer = styled.div`
-  // background-color:#cccccc;
   background-color: ${props => (props.isDarkLightMode ? '#000000' : '#f9f9f9')};
   padding: 15px;
-  // height:100vh;
 `
 export const VideoIdTitle = styled.p`
   font-size: 1rem;
@@ -23,6 +25,7 @@ export const VideoIdLikeDetailsContainer = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+
 export const LikeDisLikeContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -35,22 +38,24 @@ export const LikeBtnContainer = styled.button`
   outline: none;
   display: flex;
   align-items: center;
-  color: ${props => (!props.isLiked ? '#64748b' : '#2563eb')};
+  color: ${props => (props.isLiked ? '#2563eb' : '#64748b')};
 `
 
 export const DisLikeBtnContainer = styled.button`
-  border: 0px solid;
-  background: transparent;
+  color: ${props => (props.isDisLiked ? '#2563eb' : '#64748b')};
+  background: none;
+  border: none;
   cursor: pointer;
-  outline: none;
-  display: flex;
-  align-items: center;
-  color: ${props => (!props.isDisLiked ? '#64748b' : '#2563eb')};
 `
 export const IconBtnContainer = styled.div`
   display: flex;
   align-items: center;
   color: ${props => (!props.isSaved ? '#64748b' : '#2563eb')};
+`
+export const IconContainerBTN = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${props => (props.isLiked ? '#2563eb' : '#64748b')};
 `
 export const SaveBtnContainer = styled.button`
   border: 0px solid;
@@ -75,8 +80,13 @@ export const ProfileTextContainer = styled.div`
 `
 export const ProfileTitle = styled.p`
   margin-top: 0px;
-  color: #313131;
   font-size: 1rem;
   font-weight: bold;
   color: ${props => (props.isDarkLightMode ? '#ffffff' : '#313131')};
+`
+
+export const LikeIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${props => (props.isLiked ? '#2563eb' : '#64748b')};
 `

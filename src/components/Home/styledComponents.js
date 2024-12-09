@@ -39,11 +39,11 @@ export const AllSideTopContainer = styled.ul`
 `
 
 export const ContactUsHeading = styled.h1`
-font-weight:bold;
-font-size:1.3rem;
-color:#212121;
-text-align-center;
-margin-left:10px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #212121;
+  text-align: center;
+  margin-left: 10px;
 `
 export const SocialMediaContainer = styled.div`
   display: flex;
@@ -56,11 +56,11 @@ export const SocialLogoImg = styled.img`
   margin: 10px;
 `
 export const ContactUsSubText = styled.p`
-font-weight:bold;
-font-size:1rem;
-color:#212121;
-text-align-center;
-margin-left:10px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #212121;
+  text-align: center;
+  margin-left: 10px;
 `
 export const HomeContent = styled.div`
   display: flex;

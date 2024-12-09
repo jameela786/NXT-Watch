@@ -55,7 +55,7 @@ class SavedVideos extends Component {
     return (
       <SavedVideosContext.Consumer>
         {value => {
-          const {savedVideosList, isDarkLightMode} = value // Get saved videos and mode from context
+          const {savedVideosList, isDarkLightMode} = value
 
           return (
             <div data-testid="savedVideos">
@@ -77,32 +77,46 @@ class SavedVideos extends Component {
                       </TrendingHeaderContainer>
                     </LiContainerHeader>
                     {/* Render No Saved Videos message if empty */}
-                    {!savedVideosList || savedVideosList.length === 0
-                      ? this.renderNosavedVideos(isDarkLightMode)
-                      : savedVideosList.map(video => (
-                          <StyledLink to={`/videos/${video.id}`} key={video.id}>
-                            <LiContainer>
-                              <VideoCardImg
-                                src={video.thumbnailUrl}
-                                alt="video thumbnail" // alt text for image
-                              />
-                              <CardTextContainer>
-                                <ProfileTitle isDarkLightMode={isDarkLightMode}>
-                                  {video.title} {/* Render video title here */}
-                                </ProfileTitle>
-                                <ProfileType>{video.channel.name}</ProfileType>
-                                <ProfileType>
-                                  {video.viewCount} views •{' '}
-                                  {formatDistanceToNow(
-                                    new Date(video.publishedAt),
-                                  )}{' '}
-                                  ago{' '}
-                                  {/* Render view count and published time */}
-                                </ProfileType>
-                              </CardTextContainer>
-                            </LiContainer>
-                          </StyledLink>
-                        ))}
+                    {savedVideosList && savedVideosList.length > 0
+                      ? savedVideosList.map(video => {
+                          const {
+                            id,
+                            thumbnailUrl,
+
+                            publishedAt,
+                          } = video
+
+                          return (
+                            <StyledLink
+                              to={`/videos/${video.id}`}
+                              key={video.id}
+                            >
+                              <LiContainer key={id}>
+                                <VideoCardImg
+                                  src={thumbnailUrl}
+                                  alt="video thumbnail"
+                                  role="img"
+                                />
+                                <CardTextContainer>
+                                  <ProfileTitle
+                                    isDarkLightMode={isDarkLightMode}
+                                  >
+                                    {video.title}
+                                  </ProfileTitle>
+                                  <ProfileType>
+                                    {video.channel.name}
+                                  </ProfileType>
+                                  <ProfileType>
+                                    {video.viewCount} views •{' '}
+                                    {formatDistanceToNow(new Date(publishedAt))}{' '}
+                                    ago
+                                  </ProfileType>
+                                </CardTextContainer>
+                              </LiContainer>
+                            </StyledLink>
+                          )
+                        })
+                      : this.renderNosavedVideos(isDarkLightMode)}
                   </UlCOntainer>
                 </VideoShowDetailsContent>
               </HomeContent>

@@ -63,7 +63,7 @@ class Home extends Component {
   homeVideosApiUrl = async () => {
     const {searchText} = this.state
     this.setState({apiStatus: apiStatusConstants.inProgress})
-    console.log('searched text=', searchText)
+    // console.log('searched text=', searchText)
 
     const url = `https://apis.ccbp.in/videos/all?search=${searchText}`
     // const url = `https://apis.earch=${searchText}`
@@ -77,7 +77,7 @@ class Home extends Component {
     }
 
     const response = await fetch(url, options)
-    console.log('respnse====', response)
+    // console.log('respnse====', response)
     if (response.ok) {
       const data = await response.json()
       const UpdatedData = data.videos.map(each => ({
@@ -93,7 +93,7 @@ class Home extends Component {
           subscriberCount: each.channel.subscriber_count,
         },
       }))
-      console.log('UpdatedData:', UpdatedData)
+      // console.log('UpdatedData:', UpdatedData)
 
       this.setState({
         watchList: UpdatedData,
@@ -107,7 +107,7 @@ class Home extends Component {
 
   renderHomeVideos = isDarkLightMode => {
     const {apiStatus} = this.state
-    console.log('api status = ', apiStatus)
+    // console.log('api status = ', apiStatus)
     switch (apiStatus) {
       case apiStatusConstants.success:
         return this.getHomeContentDetails(isDarkLightMode)
@@ -174,10 +174,10 @@ class Home extends Component {
   getHomeContentDetails = isDarkLightMode => {
     const {watchList} = this.state
     // const {isDarkLightMode} = this.context
-    console.log(
-      'isDarkLightMode inside home contendet details:',
-      isDarkLightMode,
-    )
+    // console.log(
+    //   'isDarkLightMode inside home contendet details:',
+    //   isDarkLightMode,
+    // )
 
     return (
       <HomeContentContainer isDarkLightMode={isDarkLightMode}>

@@ -50,7 +50,7 @@ class App extends Component {
       )
 
       if (isAlreadySaved) {
-        console.log('Video already saved:........', video)
+        // console.log('Video already saved:........', video)
         return null // Do not update state if video is already saved
       }
 
@@ -62,7 +62,7 @@ class App extends Component {
 
   render() {
     const {savedVideosList, isDarkLightMode} = this.state
-    console.log('Home Component = ', Home)
+    // console.log('Home Component = ', Home)
     return (
       <SavedVideosContext.Provider
         value={{

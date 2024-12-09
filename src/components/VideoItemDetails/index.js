@@ -46,6 +46,8 @@ import {
   VideoPlayerIdContainer,
   ProfileTextContainer,
   IconBtnContainer,
+  IconContainerBTN,
+  DivVideoItemCOntainer,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -57,7 +59,7 @@ const apiStatusConstants = {
 
 class VideoItemDetails extends Component {
   state = {
-    watchgamingList: {},
+    VideoItemObject: {},
     apiStatus: apiStatusConstants.initial,
     isLiked: false,
     isDisLiked: false,
@@ -65,17 +67,17 @@ class VideoItemDetails extends Component {
   }
 
   componentDidMount() {
-    this.getgamingDetailsApi()
+    this.getVideoItemApi()
   }
 
-  getgamingDetailsApi = async () => {
+  getVideoItemApi = async () => {
     this.setState({
       apiStatus: apiStatusConstants.inProgress,
     })
     const {match} = this.props
     const {params} = match
     const {id} = params
-    console.log('id++++++', id)
+    // console.log('id++++++', id)
     const url = `https://apis.ccbp.in/videos/${id}`
     // const url = `https://apis.eos/${id}`
     const JwtToken = Cookies.get('jwt_token')
@@ -89,16 +91,14 @@ class VideoItemDetails extends Component {
     try {
       const response = await fetch(url, options)
       const savedVideos = localStorage.getItem('savedVideosList')
-      console.log(
-        'isa Saved///////////////////////////////',
-        savedVideos.includes(id),
-      )
-      if (savedVideos.includes(id)) {
+
+      if (savedVideos && savedVideos.includes(id)) {
         this.setState({isSaved: true})
       }
+
       if (response.ok) {
         const data = await response.json()
-        console.log('videoItem data = ', data)
+        // console.log('videoItem data = ', data)
         const UpdatedData = {
           id: data.video_details.id,
           thumbnailUrl: data.video_details.thumbnail_url,
@@ -114,24 +114,28 @@ class VideoItemDetails extends Component {
           },
         }
         this.setState({
-          watchgamingList: UpdatedData,
+          VideoItemObject: UpdatedData,
           apiStatus: apiStatusConstants.success,
         })
       } else {
         this.setState({apiStatus: apiStatusConstants.failure})
       }
     } catch (error) {
-      console.error('Network or unexpected error:', error)
+      // console.error('Network or unexpected error:', error)
       this.setState({apiStatus: apiStatusConstants.failure})
     }
   }
 
   onClickDisLikeBtn = () => {
-    const {isLiked} = this.state
-    if (isLiked) {
-      this.setState(prevState => ({isLiked: !prevState.isLiked}))
-    }
-    this.setState(prevState => ({isDisLiked: !prevState.isDisLiked}))
+    // const {isLiked} = this.state
+    // if (isLiked) {
+    //   this.setState(prevState => ({isLiked: !prevState.isLiked}))
+    // }
+    // this.setState(prevState => ({isDisLiked: !prevState.isDisLiked}))
+    this.setState(prevState => ({
+      isDisLiked: !prevState.isDisLiked,
+      isLiked: false,
+    }))
   }
 
   renderLoader = isDarkLightMode => (
@@ -146,8 +150,8 @@ class VideoItemDetails extends Component {
   )
 
   OnRetryApi = () => {
-    console.log('on retry VideoItem Details api')
-    this.getgamingDetailsApi()
+    // console.log('on retry VideoItem Details api')
+    this.getVideoItemApi()
   }
 
   renderApiFailed = isDarkLightMode => (
@@ -178,18 +182,20 @@ class VideoItemDetails extends Component {
     onAddToSavedVideos,
     onRemoveSavedVideos,
   ) => {
-    const {watchgamingList, isLiked, isDisLiked, isSaved} = this.state
+    const {VideoItemObject, isLiked, isDisLiked, isSaved} = this.state
     const {
       title,
       viewCount,
       publishedAt,
       videoUrl,
       description,
-    } = watchgamingList
+    } = VideoItemObject
 
-    const subscriberCount = watchgamingList.channel?.subscriberCount || '0'
-    const nameProfile = watchgamingList.channel?.name || ''
-    const profileImgData = watchgamingList.channel?.profileImageUrl || ''
+    const subscriberCount = VideoItemObject.channel?.subscriberCount || '0'
+    const nameProfile = VideoItemObject.channel?.name || ''
+    const profileImgData = VideoItemObject.channel?.profileImageUrl || ''
+    // const likeIconColor = isLiked ? "#2563eb" : "#64748b"
+    // const dislikeIconColor = isDisLiked ? "#2563eb" : "#64748b"
     let yearsAgo
 
     if (publishedAt) {
@@ -206,18 +212,28 @@ class VideoItemDetails extends Component {
             <ProfileType>
               {viewCount} views . {yearsAgo} years ago
             </ProfileType>
+
             <LikeDisLikeContainer>
-              <LikeBtnContainer onClick={this.onClickLikeBtn} isLiked={isLiked}>
+              <IconContainerBTN isLiked={isLiked}>
                 <BiLike />
-                Like
-              </LikeBtnContainer>
-              <DisLikeBtnContainer
-                onClick={this.onClickDisLikeBtn}
-                isDisLiked={isDisLiked}
-              >
+                <LikeBtnContainer
+                  type="button"
+                  onClick={this.onClickLikeBtn}
+                  isLiked={isLiked}
+                >
+                  Like
+                </LikeBtnContainer>
+              </IconContainerBTN>
+              <IconContainerBTN isDisLiked={isDisLiked}>
                 <BiDislike />
-                Dislike
-              </DisLikeBtnContainer>
+                <DisLikeBtnContainer
+                  type="button"
+                  onClick={this.onClickDisLikeBtn}
+                  isDisLiked={isDisLiked}
+                >
+                  Dislike
+                </DisLikeBtnContainer>
+              </IconContainerBTN>
               <IconBtnContainer isSaved={isSaved}>
                 <MdPlaylistAdd />
                 <SaveBtnContainer
@@ -225,6 +241,7 @@ class VideoItemDetails extends Component {
                     this.onClickSaveBtn(onAddToSavedVideos, onRemoveSavedVideos)
                   }
                   isSaved={isSaved}
+                  type="button"
                 >
                   {isSaved ? 'Saved' : 'Save'}
                 </SaveBtnContainer>
@@ -238,9 +255,7 @@ class VideoItemDetails extends Component {
               <ProfileTitle isDarkLightMode={isDarkLightMode}>
                 {nameProfile}
               </ProfileTitle>
-              <ProfileType>
-                {viewCount} views {subscriberCount} Subscribers
-              </ProfileType>
+              <ProfileType>{subscriberCount} Subscribers</ProfileType>
               <VideoIdTitle isDarkLightMode={isDarkLightMode}>
                 {description}
               </VideoIdTitle>
@@ -252,25 +267,50 @@ class VideoItemDetails extends Component {
   }
 
   onClickLikeBtn = () => {
-    const {isDisLiked} = this.state
-    if (isDisLiked) {
-      this.setState(prevState => ({isDisLiked: !prevState.isDisLiked}))
-    }
-    this.setState(prevState => ({isLiked: !prevState.isLiked}))
+    // const {isDisLiked} = this.state
+    // if (isDisLiked) {
+    //   this.setState(prevState => ({isDisLiked: !prevState.isDisLiked}))
+    // }
+    // this.setState(prevState => ({isLiked: !prevState.isLiked}))
+
+    this.setState(prevState => ({
+      isLiked: !prevState.isLiked,
+      isDisLiked: false,
+    }))
   }
 
   // Define onClickSaveBtn method here
   onClickSaveBtn = (onAddToSavedVideos, onRemoveSavedVideos) => {
-    const {isSaved, watchgamingList} = this.state
-    // Check if video is already saved
+    const {isSaved, VideoItemObject} = this.state
+
+    // if (isSaved) {
+    //   this.setState({isSaved: false})
+    //   onRemoveSavedVideos(VideoItemObject)
+    //  } else {
+    //   this.setState({isSaved: true})
+    //   onAddToSavedVideos(VideoItemObject)
+    // }
+
     if (isSaved) {
-      // If already saved, remove from saved list
-      this.setState({isSaved: false})
-      onRemoveSavedVideos(watchgamingList) // Assuming you have a method to remove from context
+      this.setState({isSaved: false}, () => {
+        onRemoveSavedVideos(VideoItemObject)
+        // Update localStorage
+        const savedVideos =
+          JSON.parse(localStorage.getItem('savedVideosList')) || []
+        const updatedVideos = savedVideos.filter(
+          video => video.id !== VideoItemObject.id,
+        )
+        localStorage.setItem('savedVideosList', JSON.stringify(updatedVideos))
+      })
     } else {
-      // If not saved, add to saved list
-      this.setState({isSaved: true})
-      onAddToSavedVideos(watchgamingList) // Assuming you have a method to add to context
+      this.setState({isSaved: true}, () => {
+        onAddToSavedVideos(VideoItemObject)
+        // Update localStorage
+        const savedVideos =
+          JSON.parse(localStorage.getItem('savedVideosList')) || []
+        savedVideos.push(VideoItemObject)
+        localStorage.setItem('savedVideosList', JSON.stringify(savedVideos))
+      })
     }
   }
 
@@ -298,7 +338,7 @@ class VideoItemDetails extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <SavedVideosContext.Consumer>
           {value => {
             const {
@@ -308,7 +348,7 @@ class VideoItemDetails extends Component {
             } = value
 
             return (
-              <div data-testid="videoItemDetails">
+              <DivVideoItemCOntainer data-testid="videoItemDetails">
                 <Header />
                 <HomeContent>
                   <SideNavBar />
@@ -320,11 +360,11 @@ class VideoItemDetails extends Component {
                     )}
                   </VideoShowDetailsContent>
                 </HomeContent>
-              </div>
+              </DivVideoItemCOntainer>
             )
           }}
         </SavedVideosContext.Consumer>
-      </div>
+      </>
     )
   }
 }

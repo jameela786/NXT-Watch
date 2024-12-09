@@ -68,7 +68,7 @@ class Gaming extends Component {
       const response = await fetch(url, options)
       if (response.ok) {
         const data = await response.json()
-        console.log('gaming data = ', data)
+        // console.log('gaming data = ', data)
         const UpdatedData = data.videos.map(each => ({
           id: each.id,
           thumbnailUrl: each.thumbnail_url,
@@ -134,7 +134,7 @@ class Gaming extends Component {
   )
 
   OnRetryApi = () => {
-    console.log('on retry Gaming api')
+    // console.log('on retry Gaming api')
     this.getgamingDetailsApi()
   }
 
@@ -177,7 +177,7 @@ class Gaming extends Component {
 
   render() {
     const {watchgamingList} = this.state
-    console.log('gaming published date', watchgamingList)
+    // console.log('gaming published date', watchgamingList)
     return (
       <SavedVideosContext.Consumer>
         {value => {

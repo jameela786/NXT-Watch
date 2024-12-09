@@ -56,7 +56,7 @@ class Trending extends Component {
   )
 
   OnRetryApi = () => {
-    console.log('on retry trending api')
+    // console.log('on retry trending api')
     this.getTrendingDetailsApi()
   }
 
@@ -85,8 +85,8 @@ class Trending extends Component {
 
   getTrendingContentDetails = isDarkLightMode => {
     const {watchTrendingList, apiFailed} = this.state
-    const {id} = watchTrendingList
-    console.log('trending id ----------', id, watchTrendingList)
+    // const {id} = watchTrendingList
+    // console.log('trending id ----------', id, watchTrendingList)
     if (apiFailed) {
       return this.renderApiFailed(isDarkLightMode)
     }
@@ -144,7 +144,7 @@ class Trending extends Component {
       const response = await fetch(url, options)
       if (response.ok) {
         const data = await response.json()
-        console.log('trending data = ', data)
+        // console.log('trending data = ', data)
         const UpdatedData = data.videos.map(each => ({
           id: each.id,
           publishedAt: each.published_at,
@@ -171,8 +171,8 @@ class Trending extends Component {
   }
 
   render() {
-    const {watchTrendingList, isLoading} = this.state
-    console.log('trending published date', watchTrendingList, isLoading)
+    const {isLoading} = this.state
+    // console.log('trending published date', watchTrendingList, isLoading)
     // const yearsAgo = formatDistanceToNow(new Date(publishedAt)).split(' ')
     return (
       <SavedVideosContext.Consumer>

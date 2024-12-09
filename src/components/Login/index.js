@@ -74,7 +74,7 @@ class LoginForm extends Component {
 
     try {
       const response = await fetch(url, options)
-      console.log('response,objet', response, options)
+      // console.log('response,objet', response, options)
       const data = await response.json()
       if (response.ok === true) {
         this.onSubmitSuccess(data.jwt_token)
