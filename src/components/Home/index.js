@@ -217,7 +217,7 @@ class Home extends Component {
       <SavedVideosContext.Consumer>
         {value => {
           const {isDarkLightMode} = value
-          const display = bannerDisplay === 'flex' ? 'flex' : 'none'
+
           return (
             <>
               <Header />
@@ -227,24 +227,26 @@ class Home extends Component {
                   isDarkLightMode={isDarkLightMode}
                   data-testid="home"
                 >
-                  <PremiumAddContainer data-testid="banner" display={display}>
-                    <AddTextContainer>
-                      <SiteLogoimg
-                        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-                        alt="nxt watch logo"
-                      />
-                      <BannerTitle>
-                        Buy Nxt Watch Premium prepaid plans with <br /> UPI
-                      </BannerTitle>
-                      <GetPremiumButton>GET IT NOW</GetPremiumButton>
-                    </AddTextContainer>
-                    <CloseButton
-                      onClick={this.onCloseButton}
-                      data-testid="close"
-                    >
-                      <AiOutlineClose />
-                    </CloseButton>
-                  </PremiumAddContainer>
+                  {bannerDisplay === 'flex' && (
+                    <PremiumAddContainer data-testid="banner">
+                      <AddTextContainer>
+                        <SiteLogoimg
+                          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                          alt="nxt watch logo"
+                        />
+                        <BannerTitle>
+                          Buy Nxt Watch Premium prepaid plans with <br /> UPI
+                        </BannerTitle>
+                        <GetPremiumButton>GET IT NOW</GetPremiumButton>
+                      </AddTextContainer>
+                      <CloseButton
+                        onClick={this.onCloseButton}
+                        data-testid="close"
+                      >
+                        <AiOutlineClose />
+                      </CloseButton>
+                    </PremiumAddContainer>
+                  )}
 
                   <SearchContainer>
                     <InputSearchContainer

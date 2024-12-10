@@ -99,7 +99,7 @@ export const PremiumAddContainer = styled.div`
   background-image: url(https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png);
   background-size: cover;
   background-position: right;
-  display: ${props => props.display};
+  display: display;
   justify-content: space-between;
   align-items: flex-start;
 `

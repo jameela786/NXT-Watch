@@ -39,7 +39,6 @@ export const CardTextContainer = styled.div`
 
 export const ProfileTitle = styled.p`
   margin-top: 0px;
-  color: #313131;
   font-size: 1rem;
   font-weight: bold;
   color: ${props => (props.isDarkLightMode ? '#ffffff' : '#313131')};
@@ -78,4 +77,11 @@ export const TrendIconContainer = styled.div`
   margin-left: 30px;
   color: ${props => (props.isDarkLightMode ? '#ff0000' : '#ff0000')};
   background-color: ${props => (props.isDarkLightMode ? '#000000' : '#cccccc')};
+`
+export const FailureAPiHeaderNoVideos = styled.h1`
+  font-size: 1.3rem;
+`
+
+export const SavedVideosTestContainer = styled.div`
+  font-family: Roboto;
 `

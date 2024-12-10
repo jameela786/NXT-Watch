@@ -176,7 +176,6 @@ class Gaming extends Component {
   }
 
   render() {
-    const {watchgamingList} = this.state
     // console.log('gaming published date', watchgamingList)
     return (
       <SavedVideosContext.Consumer>

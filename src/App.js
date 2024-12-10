@@ -14,16 +14,15 @@ import './App.css'
 class App extends Component {
   state = {savedVideosList: [], isDarkLightMode: false}
 
-  componentDidMount() {
-    // Retrieve saved videos from localStorage
-    const savedVideos = localStorage.getItem('savedVideosList')
-    if (savedVideos) {
-      this.setState({savedVideosList: JSON.parse(savedVideos)})
-    } else {
-      // Initialize empty list if not found in localStorage
-      this.setState({savedVideosList: []})
-    }
-  }
+  // componentDidMount() {
+  //   const savedVideos = (localStorage.getItem('savedVideosList'))
+  //   if (savedVideos) {
+  //     this.setState({savedVideosList: JSON.parse(savedVideos)})
+  //   } else {
+  //     this.setState({savedVideosList: []})
+  //   }
+
+  // }
 
   onchangeDarkLightMode = () => {
     this.setState(prevState => ({isDarkLightMode: !prevState.isDarkLightMode}))
@@ -31,46 +30,56 @@ class App extends Component {
 
   onRemoveSavedVideos = video => {
     this.setState(prevState => {
-      // Filter the savedVideosList to exclude the video being removed
       const updatedList = prevState.savedVideosList.filter(
         savedVideo => savedVideo.id !== video.id,
       )
 
-      // Update the localStorage with the new list
-      localStorage.setItem('savedVideosList', JSON.stringify(updatedList))
+      // localStorage.setItem('savedVideosList', JSON.stringify(updatedList))
 
-      return {savedVideosList: updatedList} // Update state
+      return {savedVideosList: updatedList}
     })
   }
 
+  isSavedVideo = videoId => {
+    const {savedVideosList} = this.state
+    return savedVideosList.some(video => video.id === videoId)
+  }
+
   onAddToSavedVideos = video => {
+    console.log('saving the video', video)
     this.setState(prevState => {
       const isAlreadySaved = prevState.savedVideosList.some(
-        savedVideo => savedVideo.id === video.id, // Check if video already exists
+        savedVideo => savedVideo.id === video.id,
       )
-
       if (isAlreadySaved) {
-        // console.log('Video already saved:........', video)
-        return null // Do not update state if video is already saved
+        return null
       }
-
       const updatedList = [...prevState.savedVideosList, video]
-      localStorage.setItem('savedVideosList', JSON.stringify(updatedList)) // Save to localStorage
+      // localStorage.setItem('savedVideosList', JSON.stringify(updatedList))
       return {savedVideosList: updatedList}
     })
+
+    // this.setState(prevState => {
+    //   const updatedList = prevState.savedVideosList.some(savedVideo => savedVideo.id === video.id)
+    //     ? prevState.savedVideosList
+    //     : [...prevState.savedVideosList, video]
+    //   return {savedVideosList: updatedList}
+    // })
   }
 
   render() {
     const {savedVideosList, isDarkLightMode} = this.state
     // console.log('Home Component = ', Home)
+    console.log('savedVideosList in render method==', savedVideosList)
     return (
       <SavedVideosContext.Provider
         value={{
-          savedVideosList,
+          savedVideosList: savedVideosList || [],
           onAddToSavedVideos: this.onAddToSavedVideos,
           onRemoveSavedVideos: this.onRemoveSavedVideos,
           isDarkLightMode,
           onchangeDarkLightMode: this.onchangeDarkLightMode,
+          isSavedVideo: this.isSavedVideo,
         }}
       >
         <Switch>

@@ -48,6 +48,7 @@ import {
   IconBtnContainer,
   IconContainerBTN,
   DivVideoItemCOntainer,
+  IconContainerBTNDisLike,
 } from './styledComponents'
 
 const apiStatusConstants = {
@@ -68,6 +69,13 @@ class VideoItemDetails extends Component {
 
   componentDidMount() {
     this.getVideoItemApi()
+    const {match} = this.props // Destructure here
+    const {id} = match.params // Extract id directly
+    const {savedVideosList} = this.context
+
+    // Check if the video is already in the saved list
+    const isSaved = savedVideosList.some(video => video.id === id)
+    this.setState({isSaved})
   }
 
   getVideoItemApi = async () => {
@@ -77,7 +85,7 @@ class VideoItemDetails extends Component {
     const {match} = this.props
     const {params} = match
     const {id} = params
-    // console.log('id++++++', id)
+
     const url = `https://apis.ccbp.in/videos/${id}`
     // const url = `https://apis.eos/${id}`
     const JwtToken = Cookies.get('jwt_token')
@@ -90,11 +98,11 @@ class VideoItemDetails extends Component {
 
     try {
       const response = await fetch(url, options)
-      const savedVideos = localStorage.getItem('savedVideosList')
+      // const savedVideos = localStorage.getItem('savedVideosList')
 
-      if (savedVideos && savedVideos.includes(id)) {
-        this.setState({isSaved: true})
-      }
+      // if (savedVideos && savedVideos.includes(id)) {
+      //   this.setState({isSaved: true})
+      // }
 
       if (response.ok) {
         const data = await response.json()
@@ -201,6 +209,7 @@ class VideoItemDetails extends Component {
     if (publishedAt) {
       ;[, yearsAgo] = formatDistanceToNow(new Date(publishedAt)).split(' ')
     }
+    console.log('isSaved in side videotiem details =', isSaved)
 
     return (
       <>
@@ -224,7 +233,7 @@ class VideoItemDetails extends Component {
                   Like
                 </LikeBtnContainer>
               </IconContainerBTN>
-              <IconContainerBTN isDisLiked={isDisLiked}>
+              <IconContainerBTNDisLike isDisLiked={isDisLiked}>
                 <BiDislike />
                 <DisLikeBtnContainer
                   type="button"
@@ -233,7 +242,7 @@ class VideoItemDetails extends Component {
                 >
                   Dislike
                 </DisLikeBtnContainer>
-              </IconContainerBTN>
+              </IconContainerBTNDisLike>
               <IconBtnContainer isSaved={isSaved}>
                 <MdPlaylistAdd />
                 <SaveBtnContainer
@@ -283,35 +292,35 @@ class VideoItemDetails extends Component {
   onClickSaveBtn = (onAddToSavedVideos, onRemoveSavedVideos) => {
     const {isSaved, VideoItemObject} = this.state
 
-    // if (isSaved) {
-    //   this.setState({isSaved: false})
-    //   onRemoveSavedVideos(VideoItemObject)
-    //  } else {
-    //   this.setState({isSaved: true})
-    //   onAddToSavedVideos(VideoItemObject)
-    // }
-
     if (isSaved) {
       this.setState({isSaved: false}, () => {
         onRemoveSavedVideos(VideoItemObject)
-        // Update localStorage
-        const savedVideos =
-          JSON.parse(localStorage.getItem('savedVideosList')) || []
-        const updatedVideos = savedVideos.filter(
-          video => video.id !== VideoItemObject.id,
-        )
-        localStorage.setItem('savedVideosList', JSON.stringify(updatedVideos))
       })
     } else {
       this.setState({isSaved: true}, () => {
-        onAddToSavedVideos(VideoItemObject)
-        // Update localStorage
-        const savedVideos =
-          JSON.parse(localStorage.getItem('savedVideosList')) || []
-        savedVideos.push(VideoItemObject)
-        localStorage.setItem('savedVideosList', JSON.stringify(savedVideos))
+        onAddToSavedVideos(VideoItemObject) // Add to context
       })
     }
+
+    // if (isSaved) {
+    //   this.setState({isSaved: false}, () => {
+    //     onRemoveSavedVideos(VideoItemObject)
+    //     const savedVideos =
+    //       JSON.parse(localStorage.getItem('savedVideosList')) || []
+    //     const updatedVideos = savedVideos.filter(
+    //       video => video.id !== VideoItemObject.id,
+    //     )
+    //     localStorage.setItem('savedVideosList', JSON.stringify(updatedVideos))
+    //   })
+    // } else {
+    //   this.setState({isSaved: true}, () => {
+    //     onAddToSavedVideos(VideoItemObject)
+    //     const savedVideos =
+    //       JSON.parse(localStorage.getItem('savedVideosList')) || []
+    //     savedVideos.push(VideoItemObject)
+    //     localStorage.setItem('savedVideosList', JSON.stringify(savedVideos))
+    //   })
+    // }
   }
 
   renderVideoItemDetails(
@@ -368,4 +377,6 @@ class VideoItemDetails extends Component {
     )
   }
 }
+
+VideoItemDetails.contextType = SavedVideosContext
 export default VideoItemDetails

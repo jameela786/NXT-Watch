@@ -14,7 +14,6 @@ import {
   HomeContent,
   VideoShowDetailsContent,
   FailureApiImg,
-  FailureAPiHeader,
   FailureApiSUbHeader,
   FailureApiContainer,
 } from '../Home/styledComponents'
@@ -31,6 +30,8 @@ import {
   UlCOntainer,
   LiContainerHeader,
   StyledLink,
+  FailureAPiHeaderNoVideos,
+  SavedVideosTestContainer,
 } from './styledComponents'
 
 class SavedVideos extends Component {
@@ -41,9 +42,9 @@ class SavedVideos extends Component {
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
           alt="no saved videos"
         />
-        <FailureAPiHeader isDarkLightMode={isDarkLightMode}>
-          No Saved Videos Found
-        </FailureAPiHeader>
+        <FailureAPiHeaderNoVideos isDarkLightMode={isDarkLightMode}>
+          No saved videos found
+        </FailureAPiHeaderNoVideos>
         <FailureApiSUbHeader isDarkLightMode={isDarkLightMode}>
           You can save your videos while watching them.
         </FailureApiSUbHeader>
@@ -56,71 +57,70 @@ class SavedVideos extends Component {
       <SavedVideosContext.Consumer>
         {value => {
           const {savedVideosList, isDarkLightMode} = value
-
+          console.log(
+            'savedVideosList inside context saved vid-',
+            savedVideosList,
+          )
           return (
-            <div data-testid="savedVideos">
+            <SavedVideosTestContainer data-testid="savedVideos">
               <Header />
               <HomeContent>
                 <SideNavBar />
                 <VideoShowDetailsContent isDarkLightMode={isDarkLightMode}>
                   <UlCOntainer>
-                    <LiContainerHeader>
-                      <TrendingHeaderContainer
-                        isDarkLightMode={isDarkLightMode}
-                      >
-                        <TrendIconContainer isDarkLightMode={isDarkLightMode}>
-                          <MdPlaylistAdd />
-                        </TrendIconContainer>
-                        <TrendingHeader isDarkLightMode={isDarkLightMode}>
-                          Saved Videos
-                        </TrendingHeader>
-                      </TrendingHeaderContainer>
-                    </LiContainerHeader>
-                    {/* Render No Saved Videos message if empty */}
-                    {savedVideosList && savedVideosList.length > 0
-                      ? savedVideosList.map(video => {
-                          const {
-                            id,
-                            thumbnailUrl,
-
-                            publishedAt,
-                          } = video
-
-                          return (
-                            <StyledLink
-                              to={`/videos/${video.id}`}
-                              key={video.id}
+                    {console.log(
+                      'savedVideosList.length=',
+                      savedVideosList.length,
+                    )}
+                    {savedVideosList && savedVideosList.length > 0 ? (
+                      <>
+                        <LiContainerHeader>
+                          <TrendingHeaderContainer
+                            isDarkLightMode={isDarkLightMode}
+                          >
+                            <TrendIconContainer
+                              isDarkLightMode={isDarkLightMode}
                             >
-                              <LiContainer key={id}>
-                                <VideoCardImg
-                                  src={thumbnailUrl}
-                                  alt="video thumbnail"
-                                  role="img"
-                                />
-                                <CardTextContainer>
-                                  <ProfileTitle
-                                    isDarkLightMode={isDarkLightMode}
-                                  >
-                                    {video.title}
-                                  </ProfileTitle>
-                                  <ProfileType>
-                                    {video.channel.name}
-                                  </ProfileType>
-                                  <ProfileType>
-                                    {video.viewCount} views •{' '}
-                                    {formatDistanceToNow(new Date(publishedAt))}{' '}
-                                    ago
-                                  </ProfileType>
-                                </CardTextContainer>
-                              </LiContainer>
-                            </StyledLink>
-                          )
-                        })
-                      : this.renderNosavedVideos(isDarkLightMode)}
+                              <MdPlaylistAdd />
+                            </TrendIconContainer>
+                            <TrendingHeader isDarkLightMode={isDarkLightMode}>
+                              Saved Videos
+                            </TrendingHeader>
+                          </TrendingHeaderContainer>
+                        </LiContainerHeader>
+                        {/* { console.log("savedVideosList=",savedVideosList)} */}
+                        {savedVideosList.map(video => (
+                          <StyledLink to={`/videos/${video.id}`} key={video.id}>
+                            <LiContainer>
+                              <VideoCardImg
+                                src={video.thumbnailUrl}
+                                alt="video thumbnail"
+                                role="img"
+                              />
+                              <CardTextContainer>
+                                <ProfileTitle isDarkLightMode={isDarkLightMode}>
+                                  {video.title}
+                                </ProfileTitle>
+                                <ProfileType>{video.channel.name}</ProfileType>
+                                <ProfileType>
+                                  {video.viewCount} views •{' '}
+                                  {formatDistanceToNow(
+                                    new Date(video.publishedAt),
+                                  )}{' '}
+                                  ago
+                                </ProfileType>
+                              </CardTextContainer>
+                            </LiContainer>
+                          </StyledLink>
+                        ))}
+                      </>
+                    ) : (
+                      this.renderNosavedVideos(isDarkLightMode)
+                    )}
                   </UlCOntainer>
                 </VideoShowDetailsContent>
               </HomeContent>
-            </div>
+            </SavedVideosTestContainer>
           )
         }}
       </SavedVideosContext.Consumer>

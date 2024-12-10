@@ -6,6 +6,7 @@ const SavedVideosContext = React.createContext({
   onRemoveSavedVideos: () => {},
   isDarkLightMode: false,
   onchangeDarkLightMode: () => {},
+  isSavedVideo: () => {}, // New method to check if a video is saved
 })
 
 export default SavedVideosContext

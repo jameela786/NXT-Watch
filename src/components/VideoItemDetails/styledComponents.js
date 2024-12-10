@@ -57,6 +57,12 @@ export const IconContainerBTN = styled.div`
   align-items: center;
   color: ${props => (props.isLiked ? '#2563eb' : '#64748b')};
 `
+export const IconContainerBTNDisLike = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${props => (props.isDisLiked ? '#2563eb' : '#64748b')};
+`
+
 export const SaveBtnContainer = styled.button`
   border: 0px solid;
   background: transparent;
